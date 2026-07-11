@@ -74,7 +74,7 @@ function nameCol(k){const i=idx(DATA[k].header,/nume/i);return i>=0?i:1;}
 function locCol(k){return idx(DATA[k].header,/localitate/i);}
 function unitCol(k){return idx(DATA[k].header,/unitate/i);}
 function oreCol(k){return idx(DATA[k].header,/num[ăa]r ore|ore trunchi/i);}
-function discCol(k){return idx(DATA[k].header,/disciplin/i);}
+function discCol(k){return DATA[k].header.findIndex(x=>/^\s*disciplin/i.test(String(x).split(' | ')[0]));}
 function uniqDisc(k){const dc=discCol(k);if(dc<0)return[];const s=new Set();DATA[k].rows.forEach(r=>{const d=(r[dc]||'').split(' | ')[0].trim();if(d)s.add(d);});return[...s].sort((a,b)=>a.localeCompare(b,'ro'));}
 function parseNum(s){const P=String(s).split(' | ');const map={};let ok=false;for(const p of P){const m=p.match(/^\s*(\d+)\.\s*([\s\S]*)$/);if(m){map[+m[1]]=m[2].replace(/\s+/g,' ').trim();ok=true;}}return ok?map:null;}
 function secTitle(hd,i){const parts=String(hd).split(' | ');const pre=parts[0].split(/\d+\./)[0].replace(/[|:\s]+$/,'').trim();if(pre)return pre;const f=parts.find(p=>/\d+\./.test(p));if(f)return f.replace(/^\D*\d+\.\s*/,'').trim()||('Câmp '+(i+1));return 'Câmp '+(i+1);}
